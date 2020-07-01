@@ -2,7 +2,7 @@
 Diabetes Management Solution practice project
 
 ## DMS Installation Prerequisites
-	- [Installing Docker](https://docs.docker.com/get-docker/) 
+- [Installing Docker](https://docs.docker.com/get-docker/)
 
 ## Running Authorization server on local machine
 Execute docker command `docker run -p 8083:8083 mgharib/keycloack-auth-server` to run Authorization server on port 8083
