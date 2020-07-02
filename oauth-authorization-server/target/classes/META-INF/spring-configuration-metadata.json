@@ -1,0 +1,42 @@
+{
+  "groups": [
+    {
+      "name": "keycloak.server",
+      "type": "com.baeldung.jwt.config.KeycloakServerProperties",
+      "sourceType": "com.baeldung.jwt.config.KeycloakServerProperties"
+    },
+    {
+      "name": "keycloak.server.admin-user",
+      "type": "com.baeldung.jwt.config.KeycloakServerProperties$AdminUser",
+      "sourceType": "com.baeldung.jwt.config.KeycloakServerProperties",
+      "sourceMethod": "getAdminUser()"
+    }
+  ],
+  "properties": [
+    {
+      "name": "keycloak.server.admin-user.password",
+      "type": "java.lang.String",
+      "sourceType": "com.baeldung.jwt.config.KeycloakServerProperties$AdminUser",
+      "defaultValue": "admin"
+    },
+    {
+      "name": "keycloak.server.admin-user.username",
+      "type": "java.lang.String",
+      "sourceType": "com.baeldung.jwt.config.KeycloakServerProperties$AdminUser",
+      "defaultValue": "admin"
+    },
+    {
+      "name": "keycloak.server.context-path",
+      "type": "java.lang.String",
+      "sourceType": "com.baeldung.jwt.config.KeycloakServerProperties",
+      "defaultValue": "\/auth"
+    },
+    {
+      "name": "keycloak.server.realm-import-file",
+      "type": "java.lang.String",
+      "sourceType": "com.baeldung.jwt.config.KeycloakServerProperties",
+      "defaultValue": "emr-realm.json"
+    }
+  ],
+  "hints": []
+}

@@ -1,0 +1,19 @@
+server:
+  port: 8083
+
+spring:
+  datasource:
+    username: sa
+    url: jdbc:h2:mem:testdb
+
+keycloak:
+  server:
+    contextPath: /auth
+    adminUser:
+      username: emr-admin
+      password: pass
+    realmImportFile: emr-realm.json
+
+
+#john@test.com / 123
+#mike@other.com / pass
