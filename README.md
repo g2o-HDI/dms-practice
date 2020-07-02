@@ -24,3 +24,5 @@ Execute docker command `docker run -p 8083:8083 mgharib/keycloack-auth-server` t
 	-	mvn install
 	-	mvn spring-boot:run
 -	Once running, visit http://localhost:8083/auth/
+	-	login: emr-admin
+	-	password: pass
