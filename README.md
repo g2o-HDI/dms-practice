@@ -15,6 +15,10 @@ Execute docker command `docker run -p 8083:8083 mgharib/keycloack-auth-server` t
 	-	The FHIR server [http://localhost:8080/home](http://localhost:8080/home)
 	-	The OpenEMR server: [http://localhost:80/](http://localhost:80/) 
 -	configure OpenEMR to be able to export to the FHIR server [https://medium.com/@ben.che/openemr-fhir-how-to-setup-your-instance-dd646b0daec3](https://medium.com/@ben.che/openemr-fhir-how-to-setup-your-instance-dd646b0daec3)
+		-	Login info for OpenEMR
+			-	Username: admin
+			-	Password: pass
+			
 
 ## Running Spring Authorization server on local machine
 -	Clone current repo
