@@ -31,3 +31,12 @@ Execute docker command `docker run -p 8083:8083 mgharib/keycloack-auth-server` t
 -	Once running, visit http://localhost:8083/auth/
 	-	login: emr-admin
 	-	password: pass
+
+## Running DMS UI on local machine and starting development
+- Make sure you have the latest image of authorization server `docker image pull mgharib/keycloack-auth-server`
+- Run the authorization server `docker run -p 8083:8083 mgharib/keycloack-auth-server`
+- Navigate with CMD into dms-ui
+- Install dependencies `npm install`
+- Run the server `ng serve`
+- You should be able to access the ui through [http://localhost:8083](http://localhost:8083)
+- You can login using john@test.com/123
