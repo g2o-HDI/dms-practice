@@ -42,7 +42,7 @@ Execute docker command `docker run -p 8083:8083 mgharib/keycloack-auth-server` t
 - You can login using john@test.com/123
 
 ## OpenEMR- Local Development using Docker.
-- Installation of docker.
+- Installation of docker and pull mariadb and mysql.
 - Pull the latest image of openemr using `docker pull openemr/openemr`.
 - From command line Run `docker-compose up`
 - Access http://localhost:8300/ to login as `admin`. Password is `pass`. 
