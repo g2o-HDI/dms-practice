@@ -1,0 +1,6 @@
+g2o\hdi\hub\provider\PatientProvider.class
+g2o\hdi\hub\provider\HospitalProvider.class
+g2o\hdi\hub\controller\SimpleRestfulServer.class
+g2o\hdi\hub\interceptor\MyAuthorizationInterceptor.class
+g2o\hdi\hub\configuration\InterceptorConfiguration.class
+g2o\hdi\hub\interceptor\MyCorsInterceptor.class
