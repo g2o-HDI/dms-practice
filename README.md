@@ -32,6 +32,28 @@ Execute docker command `docker run -p 8083:8083 mgharib/keycloack-auth-server` t
 	-	login: emr-admin
 	-	password: pass
 
+## Running HDI-HUB server on local machine and testing with PMS
+-	Clone current repo
+-	Running HDI-HUB lcoally (port 8080)
+	-	mvn clean
+	-	mvn install
+	-	mvn jetty:run
+-	Running HDI-HUB on Docker (assign port)
+	-	Inside project ide terminal execute mvn package to generate war file
+	-	Inside HDI-HUB directory using Powershell/Terminal
+		-	Install Docker Jetty using docker run -d jetty
+		-	Execute docker build -t fhir/hapiserver .
+		-	Execute docker run -p 8090:8080 fhir/hapiserver
+			-	runs fhir server on port 8090
+-Running PMS to test HDI-HUB
+-	Run Spring Authorization Server (docker works fine)
+-	use the following commands inside the ide terminal
+	-	mvn clean
+	-	mvn install
+	-	mvn spring-boot:run
+-	Once running, PMS will post patient and organization information to HDI-HUB server every 5 seconds
+-	Enter CTRL+C to terminate once enoough patient information is populated
+
 ## Running DMS UI on local machine and starting development
 - Make sure you have the latest image of authorization server `docker image pull mgharib/keycloack-auth-server`
 - Run the authorization server `docker run -p 8083:8083 mgharib/keycloack-auth-server`
