@@ -59,8 +59,8 @@ Execute docker command `docker run -p 8083:8083 mgharib/keycloack-auth-server` t
 - Run the authorization server `docker run -p 8083:8083 mgharib/keycloack-auth-server`
 - Navigate with CMD into dms-ui
 - Install dependencies `npm install`
-- Run the server `ng serve`
-- You should be able to access the ui through [http://localhost:8083](http://localhost:8083)
+- Run the server `npm run start`
+- You should be able to access the ui through [http://localhost:4200](http://localhost:4200)
 - You can login using john@test.com/123
 
 ## OpenEMR- Local Development using Docker.
