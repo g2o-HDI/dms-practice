@@ -1,0 +1,11 @@
+[
+  {
+    "name": "Time",
+    "type": "date",
+    "format": "%-m/%-d/%Y"
+  },
+  {
+    "name": "Results",
+    "type": "number"
+  }
+]
