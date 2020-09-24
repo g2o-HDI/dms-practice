@@ -1,0 +1,33 @@
+
+>
+java:S1643g"Use a StringBuilder instead.(É¢ò›ûÿÿÿÿ8Ñ¯©ıÄ.
+Z	java:S1068"9Replace this use of System.out or System.err by a logger.(ÿ¸õûüÿÿÿÿ8„Ğ¦üÄ.
+j	java:S100†"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(áñÊ"8Ñ¯©ıÄ.
+y
+java:S2159¼"VRemove this call to "equals"; comparisons between unrelated types always return false.(«…Óæüÿÿÿÿ8Ñ¯©ıÄ.
+z
+java:S1488­"\Immediately return this expression instead of assigning it to the temporary variable "date".(âšë8Ñ¯©ıÄ.
+k
+java:S5361¶"HReplace this call to "replaceAll()" by a call to the "replace()" method.(Š‹ƒåşÿÿÿÿ8Ñ¯©ıÄ.
+?
+java:S1643ç"Use a StringBuilder instead.(…ùâÂşÿÿÿÿ8Ñ¯©ıÄ.
+~
+java:S1488—"[Immediately return this expression instead of assigning it to the temporary variable "con".(ÊÀí şÿÿÿÿ8Ñ¯©ıÄ.
+p	java:S100Ò"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(şÿ²ÿÿÿÿÿ8Ñ¯©ıÄ.
+U	java:S106C"9Replace this use of System.out or System.err by a logger.(ôÚƒÒ8÷é¥ıÄ.
+X	java:S125."<This block of commented-out lines of code should be removed.(»†Ï²8„Ğ¦üÄ.
+o	java:S1002"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(±ñÂÅÿÿÿÿÿ8„Ğ¦üÄ.
+y
+java:S2159¼"VRemove this call to "equals"; comparisons between unrelated types always return false.(«…Óæüÿÿÿÿ8Ñ¯©ıÄ.
+Q
+java:S1874–"3Remove this use of "newInstance"; it is deprecated.(šâ’ó8Ñ¯©ıÄ.
+Y
+java:S11442"7Remove this unused private "PopulateDBWithYaml" method.(±ñÂÅÿÿÿÿÿ8„Ğ¦üÄ.
+m	java:S117w"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¡ñò½8Ñ¯©ıÄ.
+v	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(ªû8Ê¹Î­Ä.
+e
+java:S2095Õ"GUse try-with-resources or close this "Statement" in a "finally" clause.(‘ß¶À8Ñ¯©ıÄ.
+h
+java:S1192j"FDefine a constant instead of duplicating this literal "phone" 3 times.(½’ßºüÿÿÿÿ8Ñ¯©ıÄ.
+e
+java:S2095‰"GUse try-with-resources or close this "Statement" in a "finally" clause.(‘ß¶À8Ñ¯©ıÄ.
