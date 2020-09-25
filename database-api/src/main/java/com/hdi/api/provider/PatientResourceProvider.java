@@ -18,6 +18,7 @@ public class PatientResourceProvider implements IResourceProvider {
         return Patient.class;
     }
 
+    //To call: http://<host>:<port>/Patient/<ID>
     @Read()
     public Patient read(@IdParam IdType theId) {
 

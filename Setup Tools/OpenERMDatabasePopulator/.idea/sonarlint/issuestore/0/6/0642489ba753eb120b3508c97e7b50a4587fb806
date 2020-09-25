@@ -1,0 +1,10 @@
+
+f
+java:S1104"RMake config a static final constant or non-public and provide accessors if needed.(¹ ‰
+O
+java:S1874";Remove this use of "putListPropertyType"; it is deprecated.(˜ù»
+t	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(­òµö8×Ï€Ã.
+o
+java:S1128"TRemove this unnecessary import: same package classes are always implicitly imported.(ö–ç©8×Ï€Ã.
+o
+java:S1128"TRemove this unnecessary import: same package classes are always implicitly imported.(¿Ó®Ş8×Ï€Ã.
