@@ -15,7 +15,35 @@ export class PatientService {
     'Content-Type': 'application/json;charset=utf-8'
   });
 
+  searchPatient(id: number): Observable<any> {
+    return this.http.get<any>(`localhost:15437/Patient/${id}`);
+  }
+
   getPatients(): Observable<any> {
-    return this.http.get<any>(Endpoints.retrievePatientData());
+    return this.http.get<any>(Endpoints.retrieveAllPatientsData());
+  }
+
+  fetchBasicPatientData(): Observable<any> {
+    return this.http.get<any>(Endpoints.fetchBasicRecord());
+  }
+
+  fetchDetailedPatientData(): Observable<any> {
+    return this.http.get<any>(Endpoints.fetchDetailedRecord());
+  }
+
+  fetchGlucoseReadingsForPatient(id: number): Observable<any> {
+    return this.http.get<any>(Endpoints.fetchGlucoseReadingsForPatient(id));
+  }
+
+  fetchA1CReadingsForPatient(id: number): Observable<any> {
+    return this.http.get<any>(Endpoints.fetchGlucoseReadingsForPatient(id));
+  }
+
+  submitGlucoseReading(): void {
+    // this.http.post();
+  }
+
+  submitA1CReading(): void {
+    // this.http.post();
   }
 }

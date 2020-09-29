@@ -1,8 +1,31 @@
-<main class="container" role="main">
-
-    <a href="http://localhost:4200/dashboard/patient?id=1"> Patient 1</a>
-    <br />
-    <a href="http://localhost:4200/dashboard/patient?id=2"> Patient 2</a>
-  
-  
-  </main>
+<div class="search-container">
+  <div class="label">
+    <span>Patient ID:</span>
+    <!-- <input
+      class="patient-search"
+      type="number"
+      #patientIDField
+      autofocus
+      formControlName="patientID"
+    /> -->
+    <form [formGroup]="patientForm" (ngSubmit)="submitForm()">
+      <div>
+        <input
+          #patientIDField
+          class="patient-search"
+          type="number"
+          autofocus
+          formControlName="patientID"
+        />
+      </div>
+    </form>
+  </div>
+  <div class="error" *ngIf="patientError">
+    {{ patientError }}
+  </div>
+  <div>
+    <button class="button" (click)="submitForm()">
+      <span>Search</span>
+    </button>
+  </div>
+</div>

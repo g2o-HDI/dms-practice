@@ -1,29 +1,22 @@
 <div>
   <div>
     <div>
-      <div>
-        <label>Reading in:</label>
-        <label
-          >mg
-          <input mat-radio type="radio" id="mg" [value]="mg" />
-        </label>
-        <label
-          >dL
-          <input mat-radio type="radio" id="dL" [value]="dL" />
-        </label>
-      </div>
-      <div>
-        <input type="text" #readingField />
+      <div class="input-1">
+        <span class="reading">Reading:</span>
+        <input class="norm" type="text" #readingField />
       </div>
     </div>
   </div>
-  <div>
-    <input type="text" #dateField />
+  <div class="input-2">
+    <span class="date">Date:</span>
+    <input class="norm" type="text" #dateField />
   </div>
-  <div>
-    <input type="text" #timeField />
+  <div class="input-3">
+    <span class="time">Time:</span>
+    <input class="norm" type="text" #timeField />
   </div>
-  <div>
-    <input type="text" #noteField />
+  <div class="input-4">
+    <span class="notes-container">Notes:</span>
+    <input class="notes" type="text" #noteField />
   </div>
 </div>
