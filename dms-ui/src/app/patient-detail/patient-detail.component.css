@@ -1,0 +1,21 @@
+.chart-container {
+  display: flex;
+  padding: 5%;
+}
+
+.chart {
+  margin-right: 7%;
+}
+
+.glucose-entry {
+  margin-left: 19%;
+  margin-right: 34%;
+}
+
+.aic-entry {
+}
+
+button {
+  min-height: 5% !important;
+  min-width: 15% !important;
+}

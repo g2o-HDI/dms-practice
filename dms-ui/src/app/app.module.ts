@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -15,6 +15,14 @@ import { MaterialModule } from './shared/modules/material-module';
 import { FusionChartsModule } from 'angular-fusioncharts';
 import * as FusionCharts from 'fusioncharts';
 import * as TimeSeries from 'fusioncharts/fusioncharts.timeseries';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule
+} from '@angular/forms';
+import { InterceptorService } from './shared/services/interceptor.service';
+
 FusionChartsModule.fcRoot(FusionCharts, TimeSeries);
 
 const routes: Routes = [
@@ -47,9 +55,18 @@ const routes: Routes = [
     HttpClientModule,
     RouterModule.forRoot(routes),
     NgbModule,
-    MaterialModule
+    ReactiveFormsModule,
+    MaterialModule,
+    FormsModule
   ],
-  providers: [],
+  providers: [
+    FormBuilder,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: InterceptorService,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
