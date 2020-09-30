@@ -1,0 +1,7 @@
+.idea
+database-api/target
+dms-ui/target
+hdi-hub/target
+oauth-authorization-server/target
+openemr-compose/target
+pms/target
