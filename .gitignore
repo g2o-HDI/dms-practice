@@ -5,3 +5,4 @@ hdi-hub/target
 oauth-authorization-server/target
 openemr-compose/target
 pms/target
+.DS_Store
