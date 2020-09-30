@@ -12,6 +12,10 @@ services:
     - databasevolume:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: root
+    ports:
+    - 3306:3306
+    expose:
+    - 3306
   openemr:
     restart: always
     image: openemr/openemr:5.0.1

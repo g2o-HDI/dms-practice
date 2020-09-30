@@ -3,7 +3,7 @@ package com.hdi.api;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
+/*@SpringBootTest
 class ApiApplicationTests {
 
     @Test
@@ -11,3 +11,4 @@ class ApiApplicationTests {
     }
 
 }
+*/

@@ -1,4 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Router } from '@angular/router';
+import { PatientState } from '../shared/state/patient.state';
 
 @Component({
   selector: 'app-glucose-entry',
@@ -12,7 +14,13 @@ export class GlucoseEntryComponent implements OnInit {
   @ViewChild('dateField') date: ElementRef;
   @ViewChild('timeField') time: ElementRef;
   @ViewChild('noteField') note: ElementRef;
-  constructor() {}
+
+  constructor(private router: Router, private state: PatientState) {}
 
   ngOnInit(): void {}
+
+  submit(): void {
+    // this.state.submitGlucoseReading(this.reading, this.date, this.time, this.note);
+    this.router.navigateByUrl('dashboard/patient');
+  }
 }
