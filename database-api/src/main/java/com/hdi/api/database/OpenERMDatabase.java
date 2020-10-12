@@ -1,5 +1,6 @@
 package com.hdi.api.database;
 
+import com.mysql.cj.Query;
 import org.hl7.fhir.dstu3.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -8,8 +9,12 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.sql.*;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -23,7 +28,11 @@ public class OpenERMDatabase {
     public OpenERMDatabase(){
         connectDB();
         SystemDictonary.put("mg_dl", new String[]{"mg/dL", "http://unitsofmeasure.org"});
+        SystemDictonary.put("mg/dL", new String[]{"mg/dL", "http://unitsofmeasure.org"});
         SystemDictonary.put("2339-0", new String[]{"Glucose","http://loinc.org"});
+        SystemDictonary.put("41995-2", new String[]{"A1C","http://loinc.org"});
+        SystemDictonary.put("SB", new String[]{"Social Security Number","http://hl7.org/fhir/identifier-type"});
+        SystemDictonary.put("DL", new String[]{"Driver's License","http://hl7.org/fhir/v2/0203"});
     }
 
 
@@ -39,6 +48,77 @@ public class OpenERMDatabase {
         //return Patient data
         return patient;
 
+    }
+
+    public List<Observation> retrieveObservationsByCode(String patientId, String code) {
+        //Build SQL query and call Database
+        String sql = String.format("SELECT %s FROM openemr.procedure_result pResult " +
+                "JOIN openemr.procedure_report pReport on pReport.procedure_report_id = pResult.procedure_report_id " +
+                "JOIN openemr.procedure_order pOrder ON pOrder.procedure_order_id = pReport.procedure_order_id " +
+                "JOIN openemr.patient_data patient ON patient.pid = pOrder.patient_id WHERE patient.id = %s AND pResult.result_code = \"%s\"",sqlObservationFields,patientId,code);
+        ResultSet result = DBSelect(sql);
+
+        //Add query results to the Observation object
+        List<Observation> observationList = buildObservations(result);
+
+        //return Observation data
+        return observationList;
+    }
+
+    public Observation retrieveObservationByID(String id) {
+        //Build SQL query and call Database
+        String sql = String.format("SELECT %s FROM openemr.procedure_result pResult " +
+                "JOIN openemr.procedure_report pReport on pReport.procedure_report_id = pResult.procedure_report_id " +
+                "JOIN openemr.procedure_order pOrder ON pOrder.procedure_order_id = pReport.procedure_order_id " +
+                "JOIN openemr.patient_data patient ON patient.pid = pOrder.patient_id WHERE pResult.procedure_result_id = %s",sqlObservationFields,id);
+        ResultSet result = DBSelect(sql);
+
+        //Add query results to the Observation object
+        try {
+            result.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        Observation observation = buildObservation(result);
+
+        //return Observation data
+        return observation;
+    }
+
+    public String addNewObservation(Observation observation) {
+
+        String id = observation.getSubject().getReference().replace("Patient/","");
+        String encounter = observation.getContext().getReference().replace("Encounter/","");
+        BigDecimal value = observation.getValueQuantity().getValue();
+        String units = observation.getValueQuantity().getUnit();
+        String code = observation.getCode().getCodingFirstRep().getCode();
+
+        SimpleDateFormat customFormatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+
+        String dateOrdered = customFormatter.format(observation.getIssued());
+        String dateCollected = customFormatter.format(observation.getEffectiveDateTimeType().getValue());
+
+
+        //String sqlQuery = String.format("{ CALL openemr.test('%s','%s',%s,'%s','%s','%s','%s',%s) }",id,encounter,value,units,code,dateOrdered,dateCollected,"001");
+        String sqlQuery = "{ CALL openemr.test(?,?,?,?,?,?,?,?,?) }";
+        try {
+            CallableStatement query = con.prepareCall(sqlQuery);
+            query.setString(1,id);
+            query.setString(2,encounter);
+            query.setBigDecimal(3,value);
+            query.setString(4,units);
+            query.setString(5,code);
+            query.setString(6,dateOrdered);
+            query.setString(7,dateCollected);
+            query.setInt(8,001);
+            query.registerOutParameter(9,Types.LONGVARCHAR);
+            query.execute();
+            String resultId = query.getString(9);
+            return resultId;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     private Patient buildPatient(ResultSet result) {
@@ -73,20 +153,20 @@ public class OpenERMDatabase {
             return null;
         }
     }
-    public void buildPatientID(Patient patient, ResultSet result) throws SQLException {
+    private void buildPatientID(Patient patient, ResultSet result) throws SQLException {
         Identifier ident = new Identifier();
         ident.setId(result.getString("id"));
         patient.addIdentifier(ident);
     }
 
-    public void buildPatientName(Patient patient, ResultSet result) throws SQLException {
+    private void buildPatientName(Patient patient, ResultSet result) throws SQLException {
         patient.addName().setFamily(result.getString("lName"))
                 .addGiven(result.getString("fname"))
                 .addGiven(result.getString("mName"))
                 .addPrefix(result.getString("title"));
     }
 
-    public void buildPatientLanguage(Patient patient, ResultSet result) throws SQLException {
+    private void buildPatientLanguage(Patient patient, ResultSet result) throws SQLException {
         //TODO: Fix this later. Data isn't being added to the database and need to add more coding elements depending on what the langauge is
         CodeableConcept langague = new CodeableConcept();
         langague.setText(result.getString("language"));
@@ -94,22 +174,24 @@ public class OpenERMDatabase {
     }
 
 
-    public void buildPatientAddress(Patient patient, ResultSet result) throws SQLException {
+    private void buildPatientAddress(Patient patient, ResultSet result) throws SQLException {
         patient.addAddress().setCity(result.getString("city")).addLine(result.getString("street")).setPostalCode(result.getString("postal_code"))
                 .setState(result.getString("state")).setCountry(result.getString("country_code"));
     }
-    public void buildPatientIdentifiers(Patient patient, ResultSet result) throws SQLException {
+    private void buildPatientIdentifiers(Patient patient, ResultSet result) throws SQLException {
         CodeableConcept codeableConcept = new CodeableConcept();
-        codeableConcept.setText("Social Security Number");
-        codeableConcept.addCoding().setCode("SB").setDisplay("Social Security Number").setSystem("http://hl7.org/fhir/identifier-type");
+        String code = "SB";
+        codeableConcept.setText(SystemDictonary.get(code)[0]);
+        codeableConcept.addCoding().setCode(code).setDisplay(SystemDictonary.get(code)[0]).setSystem(SystemDictonary.get(code)[1]);
         patient.addIdentifier().setSystem("http://hl7.org/fhir/sid/us-ssn").setType(codeableConcept).setValue(result.getString("ss"));
 
         codeableConcept = new CodeableConcept();
-        codeableConcept.setText("Driver's License");
-        codeableConcept.addCoding().setCode("DL").setDisplay("Driver's License").setSystem("http://hl7.org/fhir/v2/0203");
+        code = "DL";
+        codeableConcept.setText(SystemDictonary.get(code)[0]);
+        codeableConcept.addCoding().setCode(code).setDisplay(SystemDictonary.get(code)[0]).setSystem(SystemDictonary.get(code)[1]);
         patient.addIdentifier().setSystem("urn:oid:2.16.840.1.113883.4.3.25").setType(codeableConcept).setValue(result.getString("ss"));
     }
-    public void buildPatientPhones(Patient patient, ResultSet result) throws SQLException {
+    private void buildPatientPhones(Patient patient, ResultSet result) throws SQLException {
         String phoneHome = result.getString("phone_home");
         String phoneBiz = result.getString("phone_biz");
         String phoneCell = result.getString("phone_cell");
@@ -162,41 +244,6 @@ public class OpenERMDatabase {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    public List<Observation> retrieveObservationsByCode(String patientId, String code) {
-        //Build SQL query and call Database
-        String sql = String.format("SELECT %s FROM openemr.procedure_result pResult " +
-                "JOIN openemr.procedure_report pReport on pReport.procedure_report_id = pResult.procedure_report_id " +
-                "JOIN openemr.procedure_order pOrder ON pOrder.procedure_order_id = pReport.procedure_order_id " +
-                "JOIN openemr.patient_data patient ON patient.pid = pOrder.patient_id WHERE patient.id = %s AND pResult.result_code = \"%s\"",sqlObservationFields,patientId,code);
-        ResultSet result = DBSelect(sql);
-
-        //Add query results to the Observation object
-        List<Observation> observationList = buildObservations(result);
-
-        //return Observation data
-        return observationList;
-    }
-
-    public Observation retrieveObservationByID(String id) {
-        //Build SQL query and call Database
-        String sql = String.format("SELECT %s FROM openemr.procedure_result pResult " +
-                "JOIN openemr.procedure_report pReport on pReport.procedure_report_id = pResult.procedure_report_id " +
-                "JOIN openemr.procedure_order pOrder ON pOrder.procedure_order_id = pReport.procedure_order_id " +
-                "JOIN openemr.patient_data patient ON patient.pid = pOrder.patient_id WHERE pResult.procedure_result_id = %s",sqlObservationFields,id);
-        ResultSet result = DBSelect(sql);
-
-        //Add query results to the Observation object
-        try {
-            result.next();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        Observation observation = buildObservation(result);
-
-        //return Observation data
-        return observation;
     }
 
     private List<Observation> buildObservations(ResultSet result) {
