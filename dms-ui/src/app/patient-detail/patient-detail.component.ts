@@ -1,326 +1,28 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, AfterViewChecked } from '@angular/core';
 import { PatientState } from '../shared/state/patient.state';
 import { FihrPatient } from '../shared/classes/fihr-patient';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import * as FusionCharts from 'fusioncharts';
+import { Patient } from '../shared/classes/patient';
+import { formatDate } from '@angular/common';
+import { CookieService } from 'ng2-cookies';
 
 @Component({
   selector: 'app-patient-detail',
   templateUrl: './patient-detail.component.html',
   styleUrls: ['./patient-detail.component.css']
 })
-export class PatientDetailComponent implements OnInit, OnDestroy {
-  initialReadings = {
-    resourceType: 'Bundle',
-    id: '767b7c8c-fde2-4ba0-8849-64576bafa1d1',
-    meta: {
-      lastUpdated: '2020-09-25T10:45:24.190-04:00'
-    },
-    type: 'searchset',
-    total: 3,
-    link: [
-      {
-        relation: 'self',
-        url:
-          'http://localhost:15437/Observation?Patient=1&code=http%3A%2F%2Floinc.org%7E2339-0'
-      }
-    ],
-    entry: [
-      {
-        fullUrl: 'http://localhost:15437/Observation/1',
-        resource: {
-          resourceType: 'Observation',
-          id: '1',
-          category: [
-            {
-              coding: [
-                {
-                  system: 'http://hl7.org/fhir/observation-category',
-                  code: 'laboratory',
-                  display: 'laboratory'
-                }
-              ]
-            }
-          ],
-          code: {
-            coding: [
-              {
-                system: 'http://loinc.org',
-                code: '2339-0',
-                display: 'Glucose'
-              }
-            ],
-            text: 'Glucose'
-          },
-          subject: {
-            reference: 'Patient/1'
-          },
-          context: {
-            reference: 'Encounter/2'
-          },
-          effectiveDateTime: '2020-08-31T20:00:00-04:00',
-          issued: '2020-09-24T20:00:00.000-04:00',
-          valueQuantity: {
-            value: 77,
-            unit: 'mg/dL',
-            system: 'http://unitsofmeasure.org',
-            code: 'mg/dL'
-          }
-        }
-      },
-      {
-        fullUrl: 'http://localhost:15437/Observation/2',
-        resource: {
-          resourceType: 'Observation',
-          id: '2',
-          category: [
-            {
-              coding: [
-                {
-                  system: 'http://hl7.org/fhir/observation-category',
-                  code: 'laboratory',
-                  display: 'laboratory'
-                }
-              ]
-            }
-          ],
-          code: {
-            coding: [
-              {
-                system: 'http://loinc.org',
-                code: '2339-0',
-                display: 'Glucose'
-              }
-            ],
-            text: 'Glucose'
-          },
-          subject: {
-            reference: 'Patient/1'
-          },
-          context: {
-            reference: 'Encounter/2'
-          },
-          effectiveDateTime: '2020-09-07T20:00:00-04:00',
-          issued: '2020-09-24T20:00:00.000-04:00',
-          valueQuantity: {
-            value: 85,
-            unit: 'mg/dL',
-            system: 'http://unitsofmeasure.org',
-            code: 'mg/dL'
-          }
-        }
-      },
-      {
-        fullUrl: 'http://localhost:15437/Observation/3',
-        resource: {
-          resourceType: 'Observation',
-          id: '3',
-          category: [
-            {
-              coding: [
-                {
-                  system: 'http://hl7.org/fhir/observation-category',
-                  code: 'laboratory',
-                  display: 'laboratory'
-                }
-              ]
-            }
-          ],
-          code: {
-            coding: [
-              {
-                system: 'http://loinc.org',
-                code: '2339-0',
-                display: 'Glucose'
-              }
-            ],
-            text: 'Glucose'
-          },
-          subject: {
-            reference: 'Patient/1'
-          },
-          context: {
-            reference: 'Encounter/2'
-          },
-          effectiveDateTime: '2020-09-14T20:00:00-04:00',
-          issued: '2020-09-24T20:00:00.000-04:00',
-          valueQuantity: {
-            value: 105,
-            unit: 'mg/dL',
-            system: 'http://unitsofmeasure.org',
-            code: 'mg/dL'
-          }
-        }
-      }
-    ]
-  };
-
-  patient: any;
-  readings: any[] = [];
+export class PatientDetailComponent implements OnInit, OnDestroy{
+  patient: Patient;
+  patientId: number;
+  glocuseReadings: any[] = [];
+  a1cReadings: any[] = [];
+  glucoseDataSource: any;
+  a1cDataSource: any;
   type: any;
   width: any;
   height: any;
-  dataSource: any;
-  type2: any;
-  width2: any;
-  height2: any;
-  dataSource2: any;
-  //  varName.entry[0].effectiveDateTime
-  //  varName.entry[0].valueQuantity.value
 
-  //   {
-  //     "resourceType": "Bundle",
-  //     "id": "767b7c8c-fde2-4ba0-8849-64576bafa1d1",
-  //     "meta": {
-  //         "lastUpdated": "2020-09-25T10:45:24.190-04:00"
-  //     },
-  //     "type": "searchset",
-  //     "total": 3,
-  //     "link": [
-  //         {
-  //             "relation": "self",
-  //             "url": "http://localhost:15437/Observation?Patient=1&code=http%3A%2F%2Floinc.org%7E2339-0"
-  //         }
-  //     ],
-  //     "entry": [
-  //         {
-  //             "fullUrl": "http://localhost:15437/Observation/1",
-  //             "resource": {
-  //                 "resourceType": "Observation",
-  //                 "id": "1",
-  //                 "category": [
-  //                     {
-  //                         "coding": [
-  //                             {
-  //                                 "system": "http://hl7.org/fhir/observation-category",
-  //                                 "code": "laboratory",
-  //                                 "display": "laboratory"
-  //                             }
-  //                         ]
-  //                     }
-  //                 ],
-  //                 "code": {
-  //                     "coding": [
-  //                         {
-  //                             "system": "http://loinc.org",
-  //                             "code": "2339-0",
-  //                             "display": "Glucose"
-  //                         }
-  //                     ],
-  //                     "text": "Glucose"
-  //                 },
-  //                 "subject": {
-  //                     "reference": "Patient/1"
-  //                 },
-  //                 "context": {
-  //                     "reference": "Encounter/2"
-  //                 },
-  //                 "effectiveDateTime": "2020-08-31T20:00:00-04:00",
-  //                 "issued": "2020-09-24T20:00:00.000-04:00",
-  //                 "valueQuantity": {
-  //                     "value": 77,
-  //                     "unit": "mg/dL",
-  //                     "system": "http://unitsofmeasure.org",
-  //                     "code": "mg/dL"
-  //                 }
-  //             }
-  //         },
-  //         {
-  //             "fullUrl": "http://localhost:15437/Observation/2",
-  //             "resource": {
-  //                 "resourceType": "Observation",
-  //                 "id": "2",
-  //                 "category": [
-  //                     {
-  //                         "coding": [
-  //                             {
-  //                                 "system": "http://hl7.org/fhir/observation-category",
-  //                                 "code": "laboratory",
-  //                                 "display": "laboratory"
-  //                             }
-  //                         ]
-  //                     }
-  //                 ],
-  //                 "code": {
-  //                     "coding": [
-  //                         {
-  //                             "system": "http://loinc.org",
-  //                             "code": "2339-0",
-  //                             "display": "Glucose"
-  //                         }
-  //                     ],
-  //                     "text": "Glucose"
-  //                 },
-  //                 "subject": {
-  //                     "reference": "Patient/1"
-  //                 },
-  //                 "context": {
-  //                     "reference": "Encounter/2"
-  //                 },
-  //                 "effectiveDateTime": "2020-09-07T20:00:00-04:00",
-  //                 "issued": "2020-09-24T20:00:00.000-04:00",
-  //                 "valueQuantity": {
-  //                     "value": 85,
-  //                     "unit": "mg/dL",
-  //                     "system": "http://unitsofmeasure.org",
-  //                     "code": "mg/dL"
-  //                 }
-  //             }
-  //         },
-  //         {
-  //             "fullUrl": "http://localhost:15437/Observation/3",
-  //             "resource": {
-  //                 "resourceType": "Observation",
-  //                 "id": "3",
-  //                 "category": [
-  //                     {
-  //                         "coding": [
-  //                             {
-  //                                 "system": "http://hl7.org/fhir/observation-category",
-  //                                 "code": "laboratory",
-  //                                 "display": "laboratory"
-  //                             }
-  //                         ]
-  //                     }
-  //                 ],
-  //                 "code": {
-  //                     "coding": [
-  //                         {
-  //                             "system": "http://loinc.org",
-  //                             "code": "2339-0",
-  //                             "display": "Glucose"
-  //                         }
-  //                     ],
-  //                     "text": "Glucose"
-  //                 },
-  //                 "subject": {
-  //                     "reference": "Patient/1"
-  //                 },
-  //                 "context": {
-  //                     "reference": "Encounter/2"
-  //                 },
-  //                 "effectiveDateTime": "2020-09-14T20:00:00-04:00",
-  //                 "issued": "2020-09-24T20:00:00.000-04:00",
-  //                 "valueQuantity": {
-  //                     "value": 105,
-  //                     "unit": "mg/dL",
-  //                     "system": "http://unitsofmeasure.org",
-  //                     "code": "mg/dL"
-  //                 }
-  //             }
-  //         }
-  //     ]
-  // }
-
-  dataUrl = this.readings;
-  // [
-  //   ['1/4/2011', 100],
-  //   ['2/5/2011', 150],
-  //   ['3/5/2011', 125],
-  //   ['4/5/2011', 150],
-  //   ['5/6/2011', 125],
-  //   ['6/7/2011', 100]
-  // ];
   schemaUrl = [
     {
       name: 'Time',
@@ -342,23 +44,12 @@ export class PatientDetailComponent implements OnInit, OnDestroy {
     ['11/6/2019', 85],
     ['12/7/2019', 80]
   ];
-  schemaUrl2 = [
-    {
-      name: 'Time',
-      type: 'date',
-      format: '%-m/%-d/%Y'
-    },
-    {
-      name: 'Results',
-      type: 'number'
-    }
-  ];
 
-  constructor(private patientState: PatientState, private router: Router) {
+  constructor(private patientState: PatientState, private router: Router, private route: ActivatedRoute) {
     this.type = 'timeseries';
-    this.width = '700';
+    this.width = '600';
     this.height = '400';
-    this.dataSource = {
+    this.glucoseDataSource = {
       data: null,
       caption: {
         text: 'Blood Glucose History'
@@ -369,7 +60,7 @@ export class PatientDetailComponent implements OnInit, OnDestroy {
       yAxis: [
         {
           plot: {
-            value: 'Blood Glucose Level',
+            value: 'Blood Glucose Level test',
             type: 'line'
           },
           format: {
@@ -379,10 +70,8 @@ export class PatientDetailComponent implements OnInit, OnDestroy {
         }
       ]
     };
-    this.type2 = 'timeseries';
-    this.width2 = '700';
-    this.height2 = '400';
-    this.dataSource2 = {
+
+    this.a1cDataSource = {
       data: null,
       caption: {
         text: 'A1C History'
@@ -403,22 +92,21 @@ export class PatientDetailComponent implements OnInit, OnDestroy {
         }
       ]
     };
-    this.setBloodGlucoseReadings();
-    this.fetchData();
-    this.fetchA1C();
-  }
-
-  setBloodGlucoseReadings(): void {
-    this.initialReadings.entry.map(entry => {
-      this.readings.push([
-        entry.resource.effectiveDateTime,
-        entry.resource.valueQuantity.value
-      ]);
-    });
+    this.patientState.searchPatient(this.getParametersData());
+    this.handleSubscriptions();
   }
 
   ngOnInit(): void {
-    this.handleSubscriptions();
+    this.setBloodGlucoseReadings();
+    this.setA1CReadings();
+    console.log(this.patient);
+  }
+
+  getParametersData() : number {
+    this.route.params.subscribe(params => {
+      this.patientId = params['id'];
+    });
+    return this.patientId
   }
 
   navigateToA1C(): void {
@@ -430,39 +118,64 @@ export class PatientDetailComponent implements OnInit, OnDestroy {
   }
 
   handleSubscriptions(): void {
-    this.patientState.$patient.subscribe(patient => {
+    this.patientState.$patient.subscribe(patient => {      
+      this.patient = new Patient(patient);
       console.log(patient);
-      this.patient = patient;
     });
   }
 
-  fetchData() {
-    let jsonify = res => res.json();
-    // let dataFetch = fetch(dataUrl).then(jsonify);
-    // let schemaFetch = fetch(schemaUrl).then(jsonify);
-    Promise.all([this.dataUrl, this.schemaUrl]).then(res => {
+ setBloodGlucoseReadings() {
+   this.patientState.$glucoseReadingForPatient.subscribe(glucose => {
+      glucose?.entry?.map(data => {
+        if (data.resource.resourceType == "Observation"){
+          const _date = new Date(data.resource.issued);
+          this.glocuseReadings.push([
+            _date.getMonth() + "/" + _date.getDate() + "/" + _date.getFullYear(),
+              data.resource.valueQuantity.value
+          ]);
+        }
+      }); 
+     this.buildCharDataForGlocuse();
+    });
+  }
+
+  setA1CReadings() {
+    this.patientState.$a1cReadingForPatient.subscribe(a1c => {
+      a1c?.entry?.map(data => {
+        console.log(a1c);
+        if (data.resource.resourceType == "Observation") {
+          const _date = new Date(data.resource.issued);
+          this.a1cReadings.push([
+            _date.getMonth() + "/" + _date.getDate() + "/" + _date.getFullYear(),
+            data.resource.valueQuantity.value
+          ]);
+        }
+      });
+      this.buildCharDataForA1C();
+    });
+  }
+ 
+  buildCharDataForGlocuse() {
+      Promise.all([this.glocuseReadings, this.schemaUrl]).then(res => {
       let data = res[0];
       let schema = res[1];
       let fusionTable = new FusionCharts.DataStore().createDataTable(
         data,
         schema
-      ); // Instance of DataTable to be passed as data in dataSource
-      this.dataSource.data = fusionTable;
+      ); 
+      this.glucoseDataSource.data = fusionTable;
     });
   }
 
-  fetchA1C() {
-    let jsonify = res => res.json();
-    // let dataFetch = fetch(dataUrl).then(jsonify);
-    // let schemaFetch = fetch(schemaUrl).then(jsonify);
-    Promise.all([this.dataUrl2, this.schemaUrl2]).then(res => {
+  buildCharDataForA1C() {
+    Promise.all([this.a1cReadings, this.schemaUrl]).then(res => {
       let data = res[0];
       let schema = res[1];
       let fusionTable = new FusionCharts.DataStore().createDataTable(
         data,
         schema
-      ); // Instance of DataTable to be passed as data in dataSource
-      this.dataSource2.data = fusionTable;
+      ); 
+      this.a1cDataSource.data = fusionTable;
     });
   }
 

@@ -32,7 +32,7 @@ const routes: Routes = [
     component: DashboardComponent,
     children: [
       { path: '', component: PatientSearchComponent },
-      { path: 'patient', component: PatientDetailComponent },
+      { path: 'patient/:id', component: PatientDetailComponent },
       { path: 'glucose-entry', component: GlucoseEntryComponent },
       { path: 'lab-results-entry', component: LabResultsEntryComponent }
     ]

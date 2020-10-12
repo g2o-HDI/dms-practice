@@ -19,7 +19,7 @@ export class GlucoseEntryComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  submit(): void {
+  onSubmit(): void {
     // this.state.submitGlucoseReading(this.reading, this.date, this.time, this.note);
     this.router.navigateByUrl('dashboard/patient');
   }

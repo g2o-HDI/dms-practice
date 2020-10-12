@@ -1,33 +1,23 @@
 <div>
-  <div *ngIf="patient">
-    {{ patient.name.prefix }}
-    {{ patient.name.given }}
-    {{ patient.name.family }}
-  </div>
-  <div class="chart-container">
-    <div class="chart">
-      <fusioncharts
-        [type]="type"
-        [width]="width"
-        [height]="height"
-        [dataSource]="dataSource"
-      ></fusioncharts>
+    <div *ngIf="patient">
+        <p *ngFor="let name of patient.name">
+            {{name.prefix[0]}} {{name.given[0]}} {{name.family}}
+        </p>
     </div>
-    <div class="chart-2">
-      <fusioncharts
-        [type]="type2"
-        [width]="width2"
-        [height]="height2"
-        [dataSource]="dataSource2"
-      ></fusioncharts>
+    <div class="chart-container">
+        <div class="chart">
+            <fusioncharts [type]="type" [width]="width" [height]="height" [dataSource]="glucoseDataSource"></fusioncharts>
+        </div>
+        <div class="chart-2">
+            <fusioncharts [type]="type" [width]="width" [height]="height" [dataSource]="a1cDataSource"></fusioncharts>
+        </div>
     </div>
-  </div>
-  <div>
-    <button class="glucose-entry" (click)="navigateToGlucose()">
+    <div>
+        <button class="glucose-entry" (click)="navigateToGlucose()">
       Enter a Blood Glucose Reading
     </button>
-    <button class="a1c-entry" (click)="navigateToA1C()">
+        <button class="a1c-entry" (click)="navigateToA1C()">
       Enter an A1C Reading
     </button>
-  </div>
+    </div>
 </div>

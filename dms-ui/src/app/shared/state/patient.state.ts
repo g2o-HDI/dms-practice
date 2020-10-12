@@ -16,16 +16,16 @@ export class PatientState {
   readonly $patients = this._patients.asObservable();
 
   private readonly _basicPatientData = new BehaviorSubject<any>(null);
-  readonly $basicPatientData = this._patients.asObservable();
+  readonly $basicPatientData = this._basicPatientData.asObservable();
 
   private readonly _detailedPatientData = new BehaviorSubject<any>(null);
-  readonly $detailedPatientData = this._patients.asObservable();
+  readonly $detailedPatientData = this._detailedPatientData.asObservable();
 
   private readonly _glucoseReadingForPatient = new BehaviorSubject<any>(null);
-  readonly $glucoseReadingForPatient = this._patients.asObservable();
+  readonly $glucoseReadingForPatient = this._glucoseReadingForPatient.asObservable();
 
   private readonly _a1cReadingForPatient = new BehaviorSubject<any>(null);
-  readonly $a1cReadingForPatient = this._patients.asObservable();
+  readonly $a1cReadingForPatient = this._a1cReadingForPatient.asObservable();
 
   getPatients(): void {
     this.patientService.getPatients().subscribe(res => {
@@ -42,9 +42,11 @@ export class PatientState {
   searchPatient(id: number): void {
     this.patient$ = null;
     this.patientService.searchPatient(id).subscribe(res => {
-      this.patient$ = res;
-      this.getGlucoseReadingsForPatient(id);
-      this.getA1CReadingsForPatient(id);
+      if (res.identifier !== null && res.identifier !== undefined){
+        this.patient$ = res;
+        this.getGlucoseReadingsForPatient(id);
+        this.getA1CReadingsForPatient(id);
+      }
     });
   }
 

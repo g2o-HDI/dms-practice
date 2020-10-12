@@ -11,12 +11,8 @@ import { FihrPatient } from '../classes/fihr-patient';
 export class PatientService {
   constructor(private http: HttpClient) {}
 
-  httpHeaders = new HttpHeaders({
-    'Content-Type': 'application/json;charset=utf-8'
-  });
-
   searchPatient(id: number): Observable<any> {
-    return this.http.get<any>(`localhost:15437/Patient/${id}`);
+    return this.http.get<any>(Endpoints.retrievePatientsDataById(id));
   }
 
   getPatients(): Observable<any> {

@@ -40,14 +40,20 @@ export class PatientSearchComponent implements OnInit {
   }
 
   searchPatient(): void {
-    this.router.navigateByUrl('dashboard/patient');
+    this.router.navigate(['dashboard/patient', this.patientID.value]);
   }
 
   submitForm(): void {
     this.state.clearPatient();
-    if (!this.patientID.errors) {
+    if (!this.patientID.errors) { 
       this.state.searchPatient(this.patientID.value);
-      this.searchPatient();
+      this.state.$patient.subscribe(patient => {
+        if(patient === null){
+          this.patientError = 'Could not find patient. Please try again.';
+        }else{
+          this.searchPatient();
+        }
+      });
     } else {
       this.patientError = 'Could not find patient. Please try again.';
     }
