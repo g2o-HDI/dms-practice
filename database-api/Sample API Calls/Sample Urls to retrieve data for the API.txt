@@ -1,0 +1,13 @@
+Retrieve all Observations based on code and Patient ID
+- localhost:15437/Observation?code=http://loinc.org~41995-2&Patient=180
+
+Retrieve Observation By ID
+- localhost:15437/Observation/3
+
+Retrieve Patient By ID
+- localhost:15437/Patient/155
+
+Retrieve Patient By Name
+- localhost:15437/Patient?family=Milton&given=Feeney
+- localhost:15437/Patient?given=Feeney
+- localhost:15437/Patient?family=Milton

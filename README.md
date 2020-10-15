@@ -14,12 +14,24 @@ Execute docker command `docker run -p 8083:8083 mgharib/keycloack-auth-server` t
 -	When all containers are started, you can access to:
 	-	The FHIR server [http://localhost:8080/home](http://localhost:8080/home)
 	-	The OpenEMR server: [http://localhost:80/](http://localhost:80/) 
+	-	The MySql database: [http://localhost:3306](http://localhost:3306)
 	-	Login into OpenEMR
 		-	Username: admin
 		-	Password: pass
+	-	Login for SQL
+		-	Username: openEMR
+		-	Password: openEMR	
 -	Follow steps in below article to configure OpenEMR to be able to export to the FHIR server 
 	-	[https://medium.com/@ben.che/openemr-fhir-how-to-setup-your-instance-dd646b0daec3](https://medium.com/@ben.che/openemr-fhir-how-to-setup-your-instance-dd646b0daec3)
 			
+
+## Additional Set up for MySQL and Adding Data to MySql
+- Either add Patients manually using OpenEMR OR run the Database populator program in the Setup Tools Folder 
+- Follow the Document on the [Teams Wiki](https://teams.microsoft.com/l/file/01C70259-95E4-496A-87F2-B822EE1B96FF?tenantId=f1f24096-28ce-464a-90b1-23ece9b5535b&fileType=docx&objectUrl=https%3A%2F%2Ficcohio.sharepoint.com%2Fsites%2FINTPRJ-TechnologyResearch-HealthcareDataInterchange%2FShared%20Documents%2FHealthcare%20Data%20Interchange%2FHow%20to%20Add%20Test%20Measurements%20to%20OpenEMR.docx&baseUrl=https%3A%2F%2Ficcohio.sharepoint.com%2Fsites%2FINTPRJ-TechnologyResearch-HealthcareDataInterchange&serviceName=teams&threadId=19:8d1c36668209476a8f9c5c5ba2e25f1d@thread.tacv2&groupId=c5f5fda2-baab-4899-ba4b-931c312be674) to set up Procedures
+	- Blood Glocuse's discrete result Code needs to be '2339-0'
+	- A1C's discrete result Code needs to be '41995-2'
+	- Check the Mapping document on the wiki for any other codes that my have been added
+- Using a SQL Program like MySql WorkBench or DBeavers, Run the SQL scripts in the Folder: "\dms-practice\Setup Tools\Required Stored Procedures for MySQL" 
 
 ## Running Spring Authorization server on local machine
 -	Clone current repo
@@ -69,3 +81,11 @@ Execute docker command `docker run -p 8083:8083 mgharib/keycloack-auth-server` t
 - From command line Run `docker-compose up`
 - Access http://localhost:8300/ to login as `admin`. Password is `pass`. 
 - More details at https://hub.docker.com/r/openemr/openemr/.
+
+## Running Database-api on local machine
+- Clone current repo
+- Run locally (port 15437 is defualt)
+	-	mvn clean install
+	-	spring-boot:run
+- Once the Service is running you can hit it using Postman or similar program to send REST requests
+	- 	Sample requests and URLs to hit are in the folder 'Database-API\Sample API Calls\'
