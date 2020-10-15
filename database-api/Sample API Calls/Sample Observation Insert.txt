@@ -1,0 +1,39 @@
+url: http://localhost:15437/Observation
+
+body:
+{
+    "resourceType": "Observation",
+    "category": [
+        {
+            "coding": [
+                {
+                    "system": "http://hl7.org/fhir/observation-category",
+                    "code": "laboratory",
+                    "display": "laboratory"
+                }
+            ]
+        }
+    ],
+    "code": {
+        "coding": [
+            {
+                "system": "http://loinc.org",
+                "code": "2339-0"
+            }
+        ]
+    },
+    "subject": {
+        "reference": "Patient/1100"
+    },
+    "context": {
+        "reference": "Encounter/4"
+    },
+    "effectiveDateTime": "2020-10-01T20:00:00-04:00",
+    "issued": "2020-10-01T20:00:00.000-04:00",
+    "valueQuantity": {
+        "value": 100,
+        "unit": "mg/dL",
+        "system": "http://unitsofmeasure.org",
+        "code": "mg/dL"
+    }
+}

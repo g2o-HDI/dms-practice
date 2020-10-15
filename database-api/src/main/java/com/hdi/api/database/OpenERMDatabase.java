@@ -1,5 +1,6 @@
 package com.hdi.api.database;
 
+import ca.uhn.fhir.rest.param.StringParam;
 import com.mysql.cj.Query;
 import org.hl7.fhir.dstu3.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,12 +44,55 @@ public class OpenERMDatabase {
         ResultSet result = DBSelect(sql);
 
         //Add query results to the Patient object
+        try {
+            result.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         Patient patient = buildPatient(result);
 
         //return Patient data
         return patient;
 
     }
+
+    public List<Patient> retrievePatientsByFullName(String givenName, String familyName) {
+        //Build SQL query and call Database
+        String sql = String.format("SELECT %s FROM openemr.patient_data WHERE fname = '%s' AND lname = '%s'",sqlPatientFields,givenName,familyName);
+        ResultSet result = DBSelect(sql);
+
+        //Add query results to the Patient object
+        List<Patient> patients = buildPatients(result);
+
+        //return Patient data
+        return patients;
+    }
+
+    public List<Patient> retrievePatientsByFirstName(String givenName) {
+        //Build SQL query and call Database
+        String sql = String.format("SELECT %s FROM openemr.patient_data WHERE fname = '%s'",sqlPatientFields,givenName);
+        ResultSet result = DBSelect(sql);
+
+        //Add query results to the Patient object
+        List<Patient> patients = buildPatients(result);
+
+        //return Patient data
+        return patients;
+    }
+
+    public List<Patient> retrievePatientsByLastName(String familyName) {
+        //Build SQL query and call Database
+        String sql = String.format("SELECT %s FROM openemr.patient_data WHERE lname = '%s'",sqlPatientFields,familyName);
+        ResultSet result = DBSelect(sql);
+
+        //Add query results to the Patient object
+        List<Patient> patients = buildPatients(result);
+
+        //return Patient data
+        return patients;
+    }
+
+
 
     public List<Observation> retrieveObservationsByCode(String patientId, String code) {
         //Build SQL query and call Database
@@ -99,8 +143,7 @@ public class OpenERMDatabase {
         String dateCollected = customFormatter.format(observation.getEffectiveDateTimeType().getValue());
 
 
-        //String sqlQuery = String.format("{ CALL openemr.test('%s','%s',%s,'%s','%s','%s','%s',%s) }",id,encounter,value,units,code,dateOrdered,dateCollected,"001");
-        String sqlQuery = "{ CALL openemr.test(?,?,?,?,?,?,?,?,?) }";
+        String sqlQuery = "{ CALL openemr.insertObservation(?,?,?,?,?,?,?,?,?) }";
         try {
             CallableStatement query = con.prepareCall(sqlQuery);
             query.setString(1,id);
@@ -121,31 +164,45 @@ public class OpenERMDatabase {
         return null;
     }
 
+    private List<Patient> buildPatients(ResultSet result) {
+        List<Patient> patientList = new ArrayList<Patient>();
+
+        try{
+            while (result.next()) {
+                patientList.add(buildPatient(result));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return patientList;
+
+    }
+
     private Patient buildPatient(ResultSet result) {
         try{
             Patient patient = new Patient();
-            while (result.next()) {
-                //ID
-                buildPatientID(patient, result);
 
-                //Name
-                buildPatientName(patient, result);
+            //ID
+            buildPatientID(patient, result);
 
-                //Language
-                buildPatientLanguage(patient, result);
+            //Name
+            buildPatientName(patient, result);
 
-                //Date of Birth
-                patient.setBirthDate(result.getDate("DOB"));
+            //Language
+            buildPatientLanguage(patient, result);
 
-                //Address
-                buildPatientAddress(patient, result);
+            //Date of Birth
+            patient.setBirthDate(result.getDate("DOB"));
 
-                //Identifiers
-                buildPatientIdentifiers(patient, result);
+            //Address
+            buildPatientAddress(patient, result);
 
-                //Phones
-                buildPatientPhones(patient, result);
-            }
+            //Identifiers
+            buildPatientIdentifiers(patient, result);
+
+            //Phones
+            buildPatientPhones(patient, result);
 
             return patient;
         } catch (SQLException throwables) {
@@ -157,6 +214,8 @@ public class OpenERMDatabase {
         Identifier ident = new Identifier();
         ident.setId(result.getString("id"));
         patient.addIdentifier(ident);
+
+        patient.setId(result.getString("id"));
     }
 
     private void buildPatientName(Patient patient, ResultSet result) throws SQLException {
@@ -304,7 +363,5 @@ public class OpenERMDatabase {
             return null;
         }
     }
-
-
 
 }
