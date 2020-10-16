@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { PatientState } from '../shared/state/patient.state';
+import { Patient } from '../shared/classes/patient';
+
 
 @Component({
   selector: 'app-patient-search',
@@ -21,6 +23,7 @@ export class PatientSearchComponent implements OnInit {
   patientForm: FormGroup;
   subscriptions: Subscription[] = [];
   patientError = '';
+  patientList : Patient[] = [];
 
   ngOnInit(): void {
     this.initForm();
@@ -43,15 +46,37 @@ export class PatientSearchComponent implements OnInit {
     this.router.navigate(['dashboard/patient', this.patientID.value]);
   }
 
-  submitForm(): void {
+  getAllPatient(): void {
+
+  }
+
+  submit() : void {
     this.state.clearPatient();
-    if (!this.patientID.errors) { 
+    if (!this.patientID.errors) {
       this.state.searchPatient(this.patientID.value);
       this.state.$patient.subscribe(patient => {
-        if(patient === null){
+        if (patient === null) {
           this.patientError = 'Could not find patient. Please try again.';
-        }else{
+        } else {
           this.searchPatient();
+        }
+      });
+    } else {
+      this.patientError = 'Could not find patient. Please try again.';
+    }
+  }
+  submitForm(): void {
+    this.state.clearPatient();
+    if (!this.patientID.errors) {
+      this.state.searchPatient(this.patientID.value);
+      this.state.$patient.subscribe(patient => {
+        if (patient === null) {
+          this.patientError = 'Could not find patient. Please try again.';
+        } else {
+          this.patientError = '';
+          this.patientList.push(patient);
+          console.log(this.patientList);
+          //this.searchPatient();
         }
       });
     } else {

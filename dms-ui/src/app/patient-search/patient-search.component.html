@@ -1,31 +1,46 @@
 <div class="search-container">
-  <div class="label">
-    <span>Patient ID:</span>
-    <!-- <input
-      class="patient-search"
-      type="number"
-      #patientIDField
-      autofocus
-      formControlName="patientID"
-    /> -->
-    <form [formGroup]="patientForm" (ngSubmit)="submitForm()">
-      <div>
-        <input
-          #patientIDField
-          class="patient-search"
-          type="number"
-          autofocus
-          formControlName="patientID"
-        />
-      </div>
-    </form>
-  </div>
-  <div class="error" *ngIf="patientError">
-    {{ patientError }}
-  </div>
-  <div>
-    <button class="button" (click)="submitForm()">
+    <div class="label">
+        <span>Patient ID:</span>
+        <form [formGroup]="patientForm" (ngSubmit)="submitForm()">
+            <div>
+                <input #patientIDField class="patient-search" type="number" autofocus formControlName="patientID" />
+            </div>
+        </form>
+    </div>
+    <div class="error" *ngIf="patientError">
+        {{ patientError }}
+    </div>
+    <div>
+        <button class="button" (click)="submitForm()">
       <span>Search</span>
     </button>
-  </div>
+    </div>
+
+    <div class="search-panel">
+        <table>
+            <th>Id</th>
+            <th>Prefix</th>
+            <th>Given Name</th>
+            <th>Family Name</th>
+            <th>DOB</th>
+            <th>City</th>
+            <th>Postal Code</th>
+            <th>State</th>
+            <th>Action</th>
+            <tbody *ngFor="let patient of patientList">
+                <tr>
+                    <td> {{patient.id}} </td>
+                    <td> {{patient.name[0]?.prefix[0]}}</td>
+                    <td> {{patient.name[0]?.given[0]}} </td>
+                    <td> {{patient.name[0]?.family}} </td>
+                    <td> {{patient.birthDate}} </td>
+                    <td> {{patient.address[0]?.city}} </td>
+                    <td> {{patient.address[0]?.postalCode}} </td>
+                    <td> {{patient.address[0]?.state}} </td>
+                    <td> <i class="fas fa-user-edit"></i> {{patient.id}} </td>
+                </tr>
+            </tbody>
+
+        </table>
+    </div>
 </div>
