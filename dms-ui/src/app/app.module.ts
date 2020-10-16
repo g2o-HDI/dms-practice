@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 
 import { AppComponent } from './app.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -21,6 +22,7 @@ import {
   FormsModule,
   ReactiveFormsModule
 } from '@angular/forms';
+import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { InterceptorService } from './shared/services/interceptor.service';
 
 FusionChartsModule.fcRoot(FusionCharts, TimeSeries);
@@ -33,8 +35,8 @@ const routes: Routes = [
     children: [
       { path: '', component: PatientSearchComponent },
       { path: 'patient/:id', component: PatientDetailComponent },
-      { path: 'glucose-entry', component: GlucoseEntryComponent },
-      { path: 'lab-results-entry', component: LabResultsEntryComponent }
+      { path: 'glucose-entry/:id', component: GlucoseEntryComponent },
+      { path: 'lab-results-entry/:id', component: LabResultsEntryComponent }
     ]
   }
 ];
@@ -57,7 +59,10 @@ const routes: Routes = [
     NgbModule,
     ReactiveFormsModule,
     MaterialModule,
-    FormsModule
+    FormsModule,
+    OwlDateTimeModule,
+    OwlNativeDateTimeModule,
+    BrowserAnimationsModule
   ],
   providers: [
     FormBuilder,

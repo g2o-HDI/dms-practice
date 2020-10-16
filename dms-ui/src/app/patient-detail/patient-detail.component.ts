@@ -99,7 +99,6 @@ export class PatientDetailComponent implements OnInit, OnDestroy{
   ngOnInit(): void {
     this.setBloodGlucoseReadings();
     this.setA1CReadings();
-    console.log(this.patient);
   }
 
   getParametersData() : number {
@@ -110,11 +109,11 @@ export class PatientDetailComponent implements OnInit, OnDestroy{
   }
 
   navigateToA1C(): void {
-    this.router.navigateByUrl('dashboard/lab-results-entry');
+    this.router.navigateByUrl('dashboard/lab-results-entry/'+this.patientId);
   }
 
   navigateToGlucose(): void {
-    this.router.navigateByUrl('dashboard/glucose-entry');
+    this.router.navigateByUrl('dashboard/glucose-entry/'+this.patientId);
   }
 
   handleSubscriptions(): void {

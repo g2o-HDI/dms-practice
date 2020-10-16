@@ -19,14 +19,10 @@ export const Endpoints = {
   },
 
   fetchA1CReadingsForPatient(id: number): string {
-    return `http://localhost:15437/Observation?code=http://loinc.org~2339-0&Patient=${id}`;
+    return `http://localhost:15437/Observation?code=http://loinc.org~41995-2&Patient=${id}`;
   },
 
-  submitA1CReading(): string {
-    return '';
-  },
-
-  submitGlucoseReading(): string {
-    return '';
+  submitObservationReading(): string {
+    return 'http://localhost:15437/Observation';
   }
 };

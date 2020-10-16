@@ -1,37 +1,27 @@
-.reading {
-  margin-right: 2%;
-  margin-top: 5%;
+.form-container {
+    padding: 20px;
 }
 
-.date {
-  margin-right: 3.5%;
+.form-group {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    width: 400px;
 }
 
-.time {
-  margin-right: 3.5%;
+.form-group input,
+.form-group label,
+.form-group select {
+    width: 200px;
 }
 
-.notes-container {
-  margin-right: 3%;
+.form-group button {
+    width: 120px;
+    padding: 5px 0;
+    margin-left: 20px
 }
 
-.input-1 {
-  margin-bottom: 4%;
-  margin-left: 5%;
-  margin-top: 5%;
-}
-
-.input-2 {
-  margin-bottom: 4%;
-  margin-left: 5%;
-}
-
-.input-3 {
-  margin-bottom: 4%;
-  margin-left: 5%;
-}
-
-.input-4 {
-  margin-bottom: 4%;
-  margin-left: 5%;
+.form-group button:hover {
+    background-color: #073d65;
+    color: white;
 }

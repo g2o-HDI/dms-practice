@@ -1,22 +1,30 @@
-<div>
-  <div>
-    <div>
-      <div class="input-1">
-        <span class="reading">Reading:</span>
-        <input class="norm" type="text" #readingField />
-      </div>
-    </div>
-  </div>
-  <div class="input-2">
-    <span class="date">Date:</span>
-    <input class="norm" type="text" #dateField />
-  </div>
-  <div class="input-3">
-    <span class="time">Time:</span>
-    <input class="norm" type="text" #timeField />
-  </div>
-  <div class="input-4">
-    <span class="notes-container">Notes:</span>
-    <input class="notes" type="text" #noteField />
-  </div>
+<div class="form-container">
+    <p [ngStyle]="{'color' : color }"> {{message}}</p>
+    <form (ngSubmit)="onSubmit()" #glucoseForm="ngForm">
+        <div class="form-group">
+            <label>Effected Date/Time: </label>
+            <input [owlDateTime]="dt1" [owlDateTimeTrigger]="dt1" name="effectiveDateTime" [(ngModel)]="observation.effectiveDateTime" required>
+            <owl-date-time #dt1></owl-date-time>
+        </div>
+        <div class="form-group">
+            <label>Issued Date/Time: </label>
+            <input [owlDateTime]="dt2" [owlDateTimeTrigger]="dt2" name="issued" [(ngModel)]="observation.issued" required>
+            <owl-date-time #dt2></owl-date-time>
+        </div>
+        <div class="form-group">
+            <label>Value: </label>
+            <input type="text" name="value" [(ngModel)]="observation.valueQuantity.value" required/>
+        </div>
+        <div class="form-group">
+            <label>unit</label>
+            <select id="unit" name="unit" [(ngModel)]="observation.valueQuantity.unit" required>
+               <option *ngFor= "let unit of units" [value]="unit" >{{unit}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <button type="submit" [disabled]="!glucoseForm.form.valid">Submit</button>
+            <button (click)="back()">Back</button>
+        </div>
+    </form>
+
 </div>

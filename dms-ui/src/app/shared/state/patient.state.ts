@@ -2,6 +2,7 @@ import { BehaviorSubject } from 'rxjs';
 import { FihrPatient } from '../classes/fihr-patient';
 import { PatientService } from '../services/patient.service';
 import { Injectable } from '@angular/core';
+import { Observation } from '../classes/observation';
 
 @Injectable({
   providedIn: 'root'
@@ -26,6 +27,10 @@ export class PatientState {
 
   private readonly _a1cReadingForPatient = new BehaviorSubject<any>(null);
   readonly $a1cReadingForPatient = this._a1cReadingForPatient.asObservable();
+
+  private readonly _successMessageAlert = new BehaviorSubject<any>(null);
+  readonly $successMessageAlert = this._successMessageAlert.asObservable();
+
 
   getPatients(): void {
     this.patientService.getPatients().subscribe(res => {
@@ -68,9 +73,21 @@ export class PatientState {
     });
   }
 
-  submitGlucoseReading(): void {}
+  submitGlucoseReading(observation: Observation): void {
+    this.successMessageAlert$ = null;
+    this.patientService.submitGlucoseReading(observation).subscribe(
+      response => this.successMessageAlert$ = true,
+        error => console.error(error),
+        () => this.successMessageAlert$ = true);
+  }
 
-  submitA1CReading(): void {}
+  submitA1CReading(observation: Observation): void {
+    this.successMessageAlert$ = null;
+    this.patientService.submitA1CReading(observation).subscribe(
+      response => this.successMessageAlert$ = true,
+      error => console.error(error),
+      () => this.successMessageAlert$ = true);
+  }
 
   clearPatient(): void {
     this.patient$ = null;
@@ -130,5 +147,13 @@ export class PatientState {
 
   set a1cReadingForPatient$(data: any) {
     this._a1cReadingForPatient.next(data);
+  }
+
+  get successMessageAlert$() {
+    return this._successMessageAlert.getValue();
+  }
+
+  set successMessageAlert$(data: any) {
+    this._successMessageAlert.next(data);
   }
 }

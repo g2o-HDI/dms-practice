@@ -1,21 +1,34 @@
+.main-container {
+    padding: 20px
+}
+
 .chart-container {
-  display: flex;
-  padding: 5%;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
 }
 
-.chart {
-  margin-right: 7%;
+.chart-container .chart {
+    padding: 10px;
+    height: fit-content;
 }
 
-.glucose-entry {
-  margin-left: 19%;
-  margin-right: 34%;
+.chart-container .chart button {
+    padding: 10px 20px;
+    display: block;
 }
 
-.aic-entry {
+button:hover {
+    background-color: #073d65;
+    color: white;
 }
 
-button {
-  min-height: 5% !important;
-  min-width: 15% !important;
-}
+@media screen and (min-width: 768px) {}
+
+@media screen and (min-width: 992px) {}
+
+@media screen and (min-width: 1200px) {}
+
+@media screen and (min-width: 1500px) {}

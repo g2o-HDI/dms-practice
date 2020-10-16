@@ -1,23 +1,23 @@
-<div>
-    <div *ngIf="patient">
-        <p *ngFor="let name of patient.name">
-            {{name.prefix[0]}} {{name.given[0]}} {{name.family}}
-        </p>
+<div class="main-container">
+    <div *ngIf="patient" class="detail-summary">
+        <span><strong>Patient ID: </strong></span><span> {{patientId}} </span>
+        <div *ngFor="let name of patient.name">
+            <span><strong>Patient Name: </strong></span><span>{{name.prefix[0]}} {{name.given[0]}} {{name.family}}</span>
+        </div>
+        <span><strong>Patient Date of Birth: </strong></span><span> {{patient.birthDate}} </span>
     </div>
     <div class="chart-container">
         <div class="chart">
             <fusioncharts [type]="type" [width]="width" [height]="height" [dataSource]="glucoseDataSource"></fusioncharts>
+            <button (click)="navigateToGlucose()">
+                    Enter a Blood Glucose Reading
+            </button>
         </div>
-        <div class="chart-2">
+        <div class="chart">
             <fusioncharts [type]="type" [width]="width" [height]="height" [dataSource]="a1cDataSource"></fusioncharts>
+            <button class="a1c-entry" (click)="navigateToA1C()">
+                Enter an A1C Reading
+            </button>
         </div>
-    </div>
-    <div>
-        <button class="glucose-entry" (click)="navigateToGlucose()">
-      Enter a Blood Glucose Reading
-    </button>
-        <button class="a1c-entry" (click)="navigateToA1C()">
-      Enter an A1C Reading
-    </button>
     </div>
 </div>

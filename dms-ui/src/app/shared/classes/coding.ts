@@ -1,7 +1,7 @@
 export class Coding {
-  code: string;
-  display: string;
   system: string;
+  code: string;
+  display?: string;
 
   constructor(data: Coding) {
     this.code = data && data.code ? data.code : null;
