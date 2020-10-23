@@ -2,8 +2,21 @@ export const Endpoints = {
   retrieveAllPatientsData(): string {
     return 'https://syntheticmass.mitre.org/v1/fhir/Patient?_count=100&apikey=Nefg5ThMvGEXQKsfhDTKP6Sj3rPrDzNY';
   },
+
   retrievePatientsDataById(id: number): string {
     return `http://localhost:15437/Patient/${id}`;
+  },
+
+  retrievePatientsDataByGivenName(givenName: string): string {
+    return `http://localhost:15437/Patient?given=${givenName}`;
+  },
+
+  retrievePatientsDataByFamilyName(familyName: string): string {
+    return `http://localhost:15437/Patient?family=${familyName}`;
+  },
+
+  retrievePatientsDataByName(givenName: string, familyName: string): string {
+    return `http://localhost:15437/Patient?given=${givenName}&family=${familyName}`;
   },
 
   fetchBasicRecord(): string {

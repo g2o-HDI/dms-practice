@@ -1,11 +1,28 @@
-.navbar{
+.navbar {
     background-color: #073d65;
+    width: 100%;
 }
-.logo-size{
+
+.logo-size {
     background-color: #073d65;
     width: 50px;
     height: 50px;
 }
-.nav-item a{
+
+.nav-item.right {
+    align-items: flex-end;
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: row;
+}
+
+.nav-item a {
     color: #fff;
+}
+
+.nav-item a:hover {
+    color: #C0C0C0;
+    font-size: 16.5px;
 }

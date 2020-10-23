@@ -92,7 +92,7 @@ export class PatientDetailComponent implements OnInit, OnDestroy{
         }
       ]
     };
-    this.patientState.searchPatient(this.getParametersData());
+    this.patientState.searchPatientById(this.getParametersData());
     this.handleSubscriptions();
   }
 

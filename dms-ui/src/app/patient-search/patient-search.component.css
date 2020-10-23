@@ -1,16 +1,5 @@
-    .label {
-        display: flex;
-        margin-top: 5%;
-        margin-left: 5%;
-        margin-bottom: 3%;
-    }
-    
-    span {
-        margin-right: 1%;
-    }
-    
-    .button {
-        margin-left: 5%;
+    h2 {
+        margin-bottom: 20px;
     }
     /* Chrome, Safari, Edge, Opera */
     
@@ -29,10 +18,40 @@
         padding: 40px;
     }
     
+    .search-panel .search-form {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+    
+    .search-panel .search-form label {
+        font-size: 16px;
+        margin-right: 20px;
+    }
+    
+    .search-panel .search-form button {
+        padding: 0 20px;
+    }
+    
+    .search-panel .search-form button:hover {
+        background-color: #073d65;
+        color: white;
+    }
+    
+    .error {
+        color: red;
+        margin-top: 10px;
+    }
+    
     .search-panel table {
         width: 100%;
     }
     
     .search-panel table th {
         border-bottom: 1px solid black;
+    }
+    
+    .search-panel table tr:nth-child(even) {
+        background-color: rgb(182, 180, 180);
     }

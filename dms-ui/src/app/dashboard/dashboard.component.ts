@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiCallService } from '../api-call.service';
 import * as FusionCharts from 'fusioncharts';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -13,7 +14,7 @@ export class DashboardComponent implements OnInit {
   orginzations: any;
   title = 'hapi-fhir-ui';
 
-  constructor(private _service: ApiCallService) {}
+  constructor(private router: Router, private _service: ApiCallService) {}
 
   logout() {
     this._service.logout();
