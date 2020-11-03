@@ -69,6 +69,7 @@ Execute docker command `docker run -p 8083:8083 mgharib/keycloack-auth-server` t
 ## Running DMS UI on local machine and starting development
 - Make sure you have the latest image of authorization server `docker image pull mgharib/keycloack-auth-server`
 - Run the authorization server `docker run -p 8083:8083 mgharib/keycloack-auth-server`
+- Make sure to bring up database-api service on local machine (refer to 'Running Database-api on local machine' given in the last section of this file)
 - Navigate with CMD into dms-ui
 - Install dependencies `npm install`
 - Run the server `npm run start`
